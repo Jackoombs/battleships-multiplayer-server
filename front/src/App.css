@@ -54,8 +54,8 @@ body {
   width: 100vw;
   display: flex;
   flex-direction: column;
+  padding-top: 5vh;
   gap: 2rem;
-  padding-top: 15vh;
 }
 
 h1 {
@@ -69,8 +69,6 @@ h2 {
 }
 
 main {
-  margin-top: 3rem;
-
   display: flex;
   flex-direction: column;
   gap: 3rem;
@@ -117,4 +115,42 @@ form p {
 
 .lobby-wait strong {
   font-size: 4rem;
+}
+
+#gameboard {
+  display: grid;
+  grid-template-columns: repeat(10, auto);
+  text-align: center;
+  touch-action: none;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  background-color: var(--secondary-color-200);
+  outline: 0.25rem var(--primary-color) solid;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carrier {
+  background-color: rgb(247, 59, 66);
+}
+
+.battleship {
+  background-color:rgb(255, 187, 0);
+}
+
+.cruiser {
+  background-color:rgb(147, 228, 18);
+}
+
+.destroyer {
+  background-color:rgb(173, 114, 255);
+}
+
+.submarine {
+  background-color:rgb(253, 253, 253);
 }

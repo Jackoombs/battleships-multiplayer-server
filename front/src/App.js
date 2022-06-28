@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import Lobby from './components/Lobby';
-import PlanningPhase from './components/PlanningPhase';
+import Game from './components/Game';
 import { io } from "socket.io-client"
 
 const socket = io("http://localhost:8080/")
@@ -10,7 +10,7 @@ function App() {
 
   const [playerTurn, setPlayerTurn] = useState()
   const [room, setRoom] = useState()
-  const [gamePhase, setGamePhase] = useState('lobby')
+  const [gamePhase, setGamePhase] = useState('planning')
 
   socket.on("valid-room", room => {
     setRoom(room)
@@ -30,14 +30,18 @@ function App() {
                 setRoom={setRoom}
               />
     }
-    if (gamePhase === 'planning') {
-      return  <PlanningPhase />
+    if (gamePhase === 'planning' || gamePhase === 'battle') {
+      return  <Game 
+                setGamePhase={setGamePhase}
+              />
     }
+    if (gamePhase === 'result')
+      return <h1>Winner</h1>
   }
 
   return (
     <div className="App">
-      <h1>BattleShips</h1>
+      <h1>Battleships</h1>
       {renderGamePhase()}
     </div>
   );
