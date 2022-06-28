@@ -1,14 +1,18 @@
 import React from "react";
+import LobbyCreateJoin from "./LobbyCreateJoin";
+import LobbyInput from "./LobbyInput";
 
-function Lobby() {
+function Lobby(props) {
   return (
     <main className="lobby">
-      <button className="lobby-btn">
-        Join Game
-      </button>
-      <button className="lobby-btn">
-        Create Game
-      </button>
+      {props.playerTurn === undefined
+        ?<LobbyCreateJoin 
+          setPlayerTurn={props.setPlayerTurn}
+        />
+        :<LobbyInput 
+          socket={props.socket}
+          setPlayerTurn={props.setPlayerTurn}
+        />}
     </main>
   )
 }
