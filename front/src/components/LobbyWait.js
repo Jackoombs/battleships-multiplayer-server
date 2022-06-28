@@ -1,4 +1,5 @@
 import React from "react";
+import { Puff } from 'react-loading-icons'
 
 function LobbyWait(props) {
 
@@ -11,7 +12,7 @@ function LobbyWait(props) {
   return (
     <div className="lobby-wait">
       <h2>Waiting for opponent in room: <br /><strong>{props.room}</strong></h2>
-      <div class="lds-ripple"><div></div><div></div></div>
+      <Puff height="10rem" width="10rem"/>
       <button className="lobby-btn" onClick={handleClick}>EXIT</button>
     </div>
   )

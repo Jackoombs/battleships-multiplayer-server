@@ -10,6 +10,10 @@ function App() {
   const [playerTurn, setPlayerTurn] = useState()
   const [room, setRoom] = useState()
 
+  socket.on("valid-room", room => {
+    setRoom(room)
+  })
+
   return (
     <div className="App">
       <h1>BattleShips</h1>

@@ -30,11 +30,15 @@ function LobbyInput(props) {
     setErrors(errors)
   }
 
+  props.socket.on("error", (error) => {
+    setErrors([...errors, error])
+  })
+
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!errors.length) {
-      props.setRoom(roomName)
-      props.socket.emit("create-room", roomName)
+      props.socket.emit("room-request", roomName, props.playerTurn)
+
     }
   }
 
@@ -52,15 +56,15 @@ function LobbyInput(props) {
         <input type="text" id="roomInput" onChange={handleChange} placeholder="ROOM NAME" onFocus={handleFocus}/>
         <label htmlFor="roomInput">Room Name</label>
         {showErrors
-          ?errors.map(error => (
-              <p>
+          ?errors.map((error, index) => (
+              <p key={index}>
                 <img src={Error} alt="error cross" />
                 {error}
               </p>
             )):''
         }
         <span>
-          <button className="lobby-btn" type="submit">Submit</button>
+          <button className="lobby-btn" type="submit">{props.playerTurn?"Create":"Join"}</button>
           <button className="lobby-btn" type="text" onClick={handleBack}>Back</button>
         </span>
       </form>

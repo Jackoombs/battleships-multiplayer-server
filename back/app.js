@@ -7,12 +7,19 @@ const io = new Server(8080, {
 })
 
 io.on("connection", (socket) => {
-  // send a message to the client
   console.log(socket.id)
 
-  // receive a message from the client
-  socket.on("create-room", room => {
-    socket.join(room)
+  socket.on("room-request", (room, playerTurn) => {
+    let isRoom = io.sockets.adapter.rooms.has(room)
+    if (playerTurn) isRoom = !isRoom
+    if (isRoom) {
+      socket.join(room)
+      socket.emit("valid-room", room)
+    } else {
+      playerTurn
+        ?socket.emit('error', "Sorry this room already exists.")
+        :socket.emit('error', "Sorry this room doesn't exist.")
+    }
   });
 
   socket.on("leave-room", room => {

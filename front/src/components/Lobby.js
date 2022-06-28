@@ -13,8 +13,7 @@ function Lobby(props) {
       return  <LobbyInput 
                 socket={props.socket}
                 setPlayerTurn={props.setPlayerTurn}
-                room={props.room}
-                setRoom={props.setRoom}
+                playerTurn={props.playerTurn}
               />
     } else {
       return  <LobbyWait 
