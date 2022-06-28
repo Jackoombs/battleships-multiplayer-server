@@ -20,6 +20,10 @@ io.on("connection", (socket) => {
         ?socket.emit('error', "Sorry this room already exists.")
         :socket.emit('error', "Sorry this room doesn't exist.")
     }
+
+    if (isRoom && !playerTurn) {
+      io.to(room).emit('start-game')
+    }
   });
 
   socket.on("leave-room", room => {
