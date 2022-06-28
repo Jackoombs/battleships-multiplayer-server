@@ -8,6 +8,7 @@ const socket = io("http://localhost:8080/")
 function App() {
 
   const [playerTurn, setPlayerTurn] = useState()
+  const [room, setRoom] = useState()
 
   return (
     <div className="App">
@@ -16,6 +17,8 @@ function App() {
         socket={socket}
         playerTurn={playerTurn}
         setPlayerTurn={setPlayerTurn}
+        room={room}
+        setRoom={setRoom}
       />
 
     </div>

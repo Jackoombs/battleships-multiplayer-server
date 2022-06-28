@@ -33,6 +33,7 @@ function LobbyInput(props) {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!errors.length) {
+      props.setRoom(roomName)
       props.socket.emit("create-room", roomName)
     }
   }
