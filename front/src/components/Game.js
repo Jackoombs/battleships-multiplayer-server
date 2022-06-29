@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import GameBoard from "./GameBoard";
+import GameInfo from "./GameInfo";
+import GameStatus from "./GameStatus";
 
 function Game(props) {
 
   const createShip = (name, color, length) => {
     return{name, color, length, placed:false}
   }
-
+  const [isReady, setIsReady] = useState(false)
   const [playerShips, setPlayerShips] = useState([
     createShip('Carrier', 'rgb(255, 89, 94)', 5),
     createShip('Battleship', 'rgb(255, 202, 58)', 4),
@@ -33,11 +35,25 @@ function Game(props) {
 
   return (
     <main className="game">
+      <GameInfo 
+        gamePhase={props.gamePhase}
+      />
       <GameBoard 
         playerShips={playerShips}
         activeShip={activeShip}
         changeShipSelectedStatus={changeShipSelectedStatus}
+        gamePhase={props.gamePhase}
         setGamePhase={props.setGamePhase}
+      />
+      <GameStatus 
+        isReady={isReady}
+        setIsReady={setIsReady}
+        activeShip={activeShip}
+        gamePhase={props.gamePhase}
+        setGamePhase={props.setGamePhase}
+        playerShips={playerShips}
+        socket={props.socket}
+        room={props.room}
       />
     </main>
   )

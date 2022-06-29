@@ -10,7 +10,7 @@ function App() {
 
   const [playerTurn, setPlayerTurn] = useState()
   const [room, setRoom] = useState()
-  const [gamePhase, setGamePhase] = useState('planning')
+  const [gamePhase, setGamePhase] = useState('lobby')
 
   socket.on("valid-room", room => {
     setRoom(room)
@@ -19,6 +19,11 @@ function App() {
   socket.on("start-game", () => {
     setGamePhase('planning')
   })
+
+  socket.on("start-battle", () => {
+    setGamePhase("battle")
+  })
+
 
   const renderGamePhase = () => {
     if (gamePhase === 'lobby') {
@@ -32,7 +37,10 @@ function App() {
     }
     if (gamePhase === 'planning' || gamePhase === 'battle') {
       return  <Game 
+                gamePhase={gamePhase}
                 setGamePhase={setGamePhase}
+                socket={socket}
+                room={room}
               />
     }
     if (gamePhase === 'result')

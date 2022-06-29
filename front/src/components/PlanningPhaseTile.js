@@ -86,7 +86,6 @@ function PlanningPhaseTile(props) {
         newPlayerShips[shipIndex].tileIndexs.push(props.index)
         props.setPlayerShips(newPlayerShips)
       }
-      props.setGamePhase("battle")
     }
   },[props.endPlanningPhase])
 

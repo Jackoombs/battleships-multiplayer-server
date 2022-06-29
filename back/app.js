@@ -29,4 +29,13 @@ io.on("connection", (socket) => {
   socket.on("leave-room", room => {
     socket.leave(room)
   })
+
+  socket.on("client-ready", room => {
+    console.log(socket.id)
+    socket.broadcast.to(room).emit("check-ready", socket.id)
+  })
+
+  socket.on("begin-battle", room => {
+    io.to(room).emit("start-battle")
+  })
 });

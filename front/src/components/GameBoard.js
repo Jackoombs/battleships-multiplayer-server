@@ -30,70 +30,37 @@ function GameBoard(props) {
   return (
     <main>
       <div id="gameboard"
-        onMouseLeave={() => {
-          setSelectionPreview([])
-        }}
+        onMouseLeave={() => {setSelectionPreview([])}}
         onTouchMove={onTouchMoveHandler}
       >
-        {[...Array(100)].map((e,i) =>  {
-          return (
-            <PlanningPhaseTile 
-              key={i}
-              index={i}
-              playerShips={props.playerShips}
-              activeShip={props.activeShip}
-              validOnHover={validOnHover}
-              changeShipSelectedStatus={props.changeShipSelectedStatus}
-              setGamePhase={props.setGamePhase}
-              selectionPreview={selectionPreview}
-              setSelectionPreview={setSelectionPreview}
-              previewOrientation={previewOrientation}
-              setPreviewOrientation={setPreviewOrientation}
-              currentTile={currentTile}
-              setCurrentTile={setCurrentTile}
-              validSelection={validSelection}
-              setValidSelection={setValidSelection}
-              selectedTiles={selectedTiles}
-              setSelectedTiles={setSelectedTiles}
-            />
-          )
-        })}
+        {props.gamePhase === "planning"?
+
+          [...Array(100)].map((e,i) =>  {
+            return (
+              <PlanningPhaseTile 
+                key={i}
+                index={i}
+                playerShips={props.playerShips}
+                activeShip={props.activeShip}
+                validOnHover={validOnHover}
+                changeShipSelectedStatus={props.changeShipSelectedStatus}
+                setGamePhase={props.setGamePhase}
+                selectionPreview={selectionPreview}
+                setSelectionPreview={setSelectionPreview}
+                previewOrientation={previewOrientation}
+                setPreviewOrientation={setPreviewOrientation}
+                currentTile={currentTile}
+                setCurrentTile={setCurrentTile}
+                validSelection={validSelection}
+                setValidSelection={setValidSelection}
+                selectedTiles={selectedTiles}
+                setSelectedTiles={setSelectedTiles}
+              />
+            )
+          })
+          :"hi"
+        }
       </div>
-    {/* <div id="gameboard"
-      onMouseLeave={() => {
-        setSelectionPreview([])
-      }}
-      onTouchMove={onTouchMoveHandler}>
-    
-      {[...Array(100)].map((e, i) => {
-        return (
-          <SelectionPhaseTile
-            key={i}
-            index={i}
-            ships={props.ships}
-            activeShip={props.activeShip}
-            setActiveShip={props.setActiveShip}
-            selectionPreview={selectionPreview}
-            setSelectionPreview={setSelectionPreview}
-            previewOrientation={previewOrientation}
-            setPreviewOrientation={setPreviewOrientation}
-            currentTile={currentTile}
-            setCurrentTile={setCurrentTile}
-            selectedTiles={selectedTiles}
-            setSelectedTiles={setSelectedTiles}
-            validSelection={validSelection}
-            setValidSelection={setValidSelection}
-            changeShipSelectedStatus={props.changeShipSelectedStatus}
-            validOnHover={validOnHover}
-            playerShips={props.playerShips}
-            setPlayerShips={props.setPlayerShips}
-            battleActive={props.battleActive}
-            setBattleActive={props.setBattleActive}
-            endPlanningPhase={props.endPlanningPhase}
-          />
-        )
-      })}
-    </div> */}
   </main>
   )
 }
