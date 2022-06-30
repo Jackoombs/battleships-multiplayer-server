@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PlanningPhaseTile from "./PlanningPhaseTile";
 
-function GameBoard(props) {
+function PlanningGameboard(props) {
 
   const [selectionPreview, setSelectionPreview] = useState([])
   const [previewOrientation, setPreviewOrientation] = useState(true)
@@ -17,6 +17,12 @@ function GameBoard(props) {
       ?setValidOnHover(false)
       :setValidOnHover(true)
   },[selectionPreview])
+
+  useEffect(() => {
+    const ships = [...props.playerShips]
+    ships.map(ship => ship.tiles=[])
+    props.setPlayerShips(ships)
+  },[selectedTiles])
 
   const onTouchMoveHandler = (e) => {
     const xCoord = e.targetTouches[0].clientX
@@ -41,10 +47,12 @@ function GameBoard(props) {
                 key={i}
                 index={i}
                 playerShips={props.playerShips}
+                setPlayerShips={props.setPlayerShips}
                 activeShip={props.activeShip}
                 validOnHover={validOnHover}
                 changeShipSelectedStatus={props.changeShipSelectedStatus}
                 setGamePhase={props.setGamePhase}
+                endPlanningPhase={props.endPlanningPhase}
                 selectionPreview={selectionPreview}
                 setSelectionPreview={setSelectionPreview}
                 previewOrientation={previewOrientation}
@@ -65,4 +73,4 @@ function GameBoard(props) {
   )
 }
 
-export default GameBoard
+export default PlanningGameboard

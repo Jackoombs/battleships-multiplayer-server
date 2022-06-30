@@ -20,11 +20,6 @@ function App() {
     setGamePhase('planning')
   })
 
-  socket.on("start-battle", () => {
-    setGamePhase("battle")
-  })
-
-
   const renderGamePhase = () => {
     if (gamePhase === 'lobby') {
       return  <Lobby 

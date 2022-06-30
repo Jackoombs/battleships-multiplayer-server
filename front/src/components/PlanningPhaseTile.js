@@ -79,14 +79,17 @@ function PlanningPhaseTile(props) {
 
   // When the user starts the game, the placement of ships is saved to state in App
   useEffect(() => {
-    return () => {
       if (isSelected.selected) {
-        const shipIndex = props.playerShips.findIndex(ship => ship.name === isSelected.name)
-        const newPlayerShips = [...props.playerShips]
-        newPlayerShips[shipIndex].tileIndexs.push(props.index)
-        props.setPlayerShips(newPlayerShips)
+        
+        const ships = [...props.playerShips]
+        const shipName = isSelected.name
+        const updatedShip = ships.find(ship => ship.name===shipName)
+        updatedShip.tiles.push(props.index)
+        props.setPlayerShips(ships)
+        
+        console.log(props.index, ...props.selectedTiles)
+        if (props.index === Math.max(...props.selectedTiles)) props.setGamePhase('battle')
       }
-    }
   },[props.endPlanningPhase])
 
   return (

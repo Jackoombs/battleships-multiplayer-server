@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import GameBoard from "./GameBoard";
+import PlanningGameboard from "./PlanningGameboard";
 import GameInfo from "./GameInfo";
 import GameStatus from "./GameStatus";
 
 function Game(props) {
 
   const createShip = (name, color, length) => {
-    return{name, color, length, placed:false}
+    return{name, color, length, placed:false, tiles: []}
   }
   const [isReady, setIsReady] = useState(false)
+  const [endPlanningPhase, setEndPlanningPhase] = useState()
   const [playerShips, setPlayerShips] = useState([
     createShip('Carrier', 'rgb(255, 89, 94)', 5),
     createShip('Battleship', 'rgb(255, 202, 58)', 4),
@@ -33,18 +34,29 @@ function Game(props) {
     setPlayerShips(newArray)
   }
 
+  props.socket.on("start-battle", () => {
+    setEndPlanningPhase(true)
+  })
+
   return (
     <main className="game">
       <GameInfo 
         gamePhase={props.gamePhase}
       />
-      <GameBoard 
-        playerShips={playerShips}
-        activeShip={activeShip}
-        changeShipSelectedStatus={changeShipSelectedStatus}
-        gamePhase={props.gamePhase}
-        setGamePhase={props.setGamePhase}
-      />
+      {
+      props.gamePhase === "planning"
+        ? <PlanningGameboard 
+            playerShips={playerShips}
+            setPlayerShips={setPlayerShips}
+            activeShip={activeShip}
+            changeShipSelectedStatus={changeShipSelectedStatus}
+            gamePhase={props.gamePhase}
+            setGamePhase={props.setGamePhase}
+            endPlanningPhase={endPlanningPhase}
+          />
+        :console.log(playerShips)
+      }
+      
       <GameStatus 
         isReady={isReady}
         setIsReady={setIsReady}
