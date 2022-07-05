@@ -216,3 +216,11 @@ li {
 .submarine {
   background-color:rgb(253, 253, 253);
 }
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: purple;
+}

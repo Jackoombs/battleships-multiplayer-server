@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PlanningGameboard from "./PlanningGameboard";
 import GameInfo from "./GameInfo";
 import GameStatus from "./GameStatus";
+import BattleGameboard from "./BattleGameboard";
 
 function Game(props) {
 
@@ -10,6 +11,7 @@ function Game(props) {
   }
   const [isReady, setIsReady] = useState(false)
   const [endPlanningPhase, setEndPlanningPhase] = useState()
+  const [selectedTiles, setSelectedTiles]= useState([])
   const [playerShips, setPlayerShips] = useState([
     createShip('Carrier', 'rgb(255, 89, 94)', 5),
     createShip('Battleship', 'rgb(255, 202, 58)', 4),
@@ -53,8 +55,20 @@ function Game(props) {
             gamePhase={props.gamePhase}
             setGamePhase={props.setGamePhase}
             endPlanningPhase={endPlanningPhase}
+            selectedTiles={selectedTiles}
+            setSelectedTiles={setSelectedTiles}
           />
-        :console.log(playerShips)
+        : <BattleGameboard 
+            playerTurn={props.playerTurn}
+            setPlayerTurn={props.setPlayerTurn}
+            playerShips={playerShips}
+            setPlayerShips={setPlayerShips}
+            setGamePhase={props.setGamePhase}
+            selectedTiles={selectedTiles}
+            setSelectedTiles={setSelectedTiles}
+            socket={props.socket}
+            room={props.room}
+          />
       }
       
       <GameStatus 

@@ -14,7 +14,7 @@ function BeginBattle(props) {
 
   const emitBattle = () => {
     if (props.isReady) {
-    props.socket.emit("begin-battle", props.room)
+    props.socket.emit("start-battle", props.room)
     }
   }
 

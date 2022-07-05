@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
     socket.broadcast.to(room).emit("check-ready", socket.id)
   })
 
-  socket.on("begin-battle", room => {
-    io.to(room).emit("start-battle")
+  socket.on("start-battle", room => {
+    io.to(room).emit('battle-begin')
   })
 });

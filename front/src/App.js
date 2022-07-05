@@ -20,6 +20,10 @@ function App() {
     setGamePhase('planning')
   })
 
+  socket.on("battle-begin", () => {
+    setGamePhase("battle")
+  })
+
   const renderGamePhase = () => {
     if (gamePhase === 'lobby') {
       return  <Lobby 
@@ -36,6 +40,8 @@ function App() {
                 setGamePhase={setGamePhase}
                 socket={socket}
                 room={room}
+                playerTurn={playerTurn}
+                setPlayerTurn={setPlayerTurn}
               />
     }
     if (gamePhase === 'result')

@@ -6,13 +6,12 @@ function PlanningGameboard(props) {
   const [selectionPreview, setSelectionPreview] = useState([])
   const [previewOrientation, setPreviewOrientation] = useState(true)
   const [currentTile, setCurrentTile] = useState(0)
-  const [selectedTiles, setSelectedTiles] = useState([])
   const [validSelection, setValidSelection] = useState([])
   const [validOnHover, setValidOnHover] = useState(true)
 
   // When user hovers on a new tile or rotates the ship, this evaluates whether a ship is already placed there.
   useEffect(() => {
-    const result = selectionPreview.filter(element => selectedTiles.includes(element))
+    const result = selectionPreview.filter(element => props.selectedTiles.includes(element))
     result.length
       ?setValidOnHover(false)
       :setValidOnHover(true)
@@ -22,7 +21,7 @@ function PlanningGameboard(props) {
     const ships = [...props.playerShips]
     ships.map(ship => ship.tiles=[])
     props.setPlayerShips(ships)
-  },[selectedTiles])
+  },[props.selectedTiles])
 
   const onTouchMoveHandler = (e) => {
     const xCoord = e.targetTouches[0].clientX
@@ -61,8 +60,8 @@ function PlanningGameboard(props) {
                 setCurrentTile={setCurrentTile}
                 validSelection={validSelection}
                 setValidSelection={setValidSelection}
-                selectedTiles={selectedTiles}
-                setSelectedTiles={setSelectedTiles}
+                selectedTiles={props.selectedTiles}
+                setSelectedTiles={props.setSelectedTiles}
               />
             )
           })
