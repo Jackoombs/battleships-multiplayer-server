@@ -13,13 +13,11 @@ function GameStatus(props) {
                 isReady={props.isReady}
                 setIsReady={props.setIsReady}
               />
-    } else if (props.gamePhase === "battle") {
-      return 'hi'
-    }
+    } 
   }
 
   const checkShipsPlaced = () => {
-    const remainingShips = props.playerShips.filter(ship => !ship.placed)
+    const remainingShips = props.ships.filter(ship => !ship.placed && ship.name !== "dummy")
     if (!remainingShips.length) return true
   }
 

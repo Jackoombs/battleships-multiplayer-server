@@ -1,105 +1,73 @@
-import React, { useState, useEffect } from "react";
-import battleshipPreview from "../utils/battleshipPreview"
-
 function PlanningPhaseTile(props) {
 
- 
-  const [isSelected, setIsSelected] = useState({selected:false})
-
-  // Update the UI when ship orientation or active ship changes.
-  useEffect(() => {
-    if (props.selectionPreview.length) {
-      selectionPreview(props.currentTile, props.activeShip.length)
-    }
-  },[props.previewOrientation, props.activeShip, props.currentTile])
-
-
-  // When the user places a ship, update the tile state to show the tiles are taken.
-  useEffect(() => {
-  if (props.validSelection.includes(props.index)) {
-    setIsSelected({selected:true, name:props.activeShip.name, orientation: props.previewOrientation})
-  }
-  },[props.validSelection])
-
-  // If the active ship changes to an already placed ship then remove the ship from the board so it can be re-placed.
-  useEffect(() => {
-    if (!props.activeShip.placed && isSelected.name === props.activeShip.name) {
-      setIsSelected({selected:false})
-      props.setSelectedTiles(oldArray => oldArray.filter(element => element!==props.index))
-      
-      if (props.currentTile) {
-        selectionPreview(props.currentTile, props.activeShip.length)
-      } 
-    } 
-  },[props.activeShip])
-
-  const selectionPreview = (index, length) => {
-      props.setSelectionPreview(battleshipPreview(index, length, props.previewOrientation))
+  const handleHover = () => {
+    props.setCurrentTile({ x: props.x, y: props.y })
   }
 
-  const passSelectionPreviewOnHover = () => {
-    selectionPreview(props.index, props.activeShip.length)
+  const handleWheel = (e) => {
+    props.setOrientation(old => old === "x" ? "y" : "x")
+    props.setCurrentTile({ x: props.x, y: props.y })
   }
 
-  const updateOrientationOnWheel = () => {
-    props.setCurrentTile(props.index)
-    props.setPreviewOrientation(!props.previewOrientation)
-  }
-
-  // If the selection is valid on click then change the activeShip select state and update the selected tiles.
-  const checkTilesValidOnClick = () => {
-    const filteredArray = props.selectionPreview.filter(element => props.selectedTiles.includes(element))
-    if (!filteredArray.length) {
-      props.setCurrentTile(props.index)
-      props.setSelectedTiles(array => array.concat(props.selectionPreview))
-      props.setValidSelection(props.selectionPreview)
-      props.changeShipSelectedStatus(props.activeShip, true)
+  const handleClick = (e) => {
+    if (props.validOnHover && props.activeShip.name !== "dummy") {
+      addToSelectedTiles()
+      props.updateShips(true, props.activeShip.name)
+    } else if (props.selectedTiles[props.x][props.y]
+      && props.activeShip.name === "dummy") {
+      const clickedShipName = (props.selectedTiles[props.x][props.y])
+      props.updateShips(false, clickedShipName)
+      removeFromSelectedTiles(clickedShipName)
     }
   }
 
-  // If all ships have been placed, allow the user to re-place by clicking on ship.
-  const changeActiveShipOnClick = () => {
-    if (!props.activeShip.name && isSelected.selected) {
-      const newActiveShip = props.playerShips.filter(ships => ships.name === isSelected.name)
-      props.changeShipSelectedStatus(newActiveShip[0], false)
-      props.setPreviewOrientation(isSelected.orientation)
-    }
-  } 
-
-  const tileClickHandler = () => {
-    checkTilesValidOnClick()
-    changeActiveShipOnClick()
-  }
-
-  const setBackgroundOnHover = () => {
-    if (!props.validOnHover && props.selectionPreview.includes(props.index)) return 'grey'
-    if (props.selectionPreview.includes(props.index)) return props.activeShip.color
-    return ''
-  }
-
-  // When the user starts the game, the placement of ships is saved to state in App
-  useEffect(() => {
-      if (isSelected.selected) {
-        const ships = [...props.playerShips]
-        const shipName = isSelected.name
-        const updatedShip = ships.find(ship => ship.name===shipName)
-        updatedShip.tiles.push(props.index)
-        props.setPlayerShips(ships)
-        console.log(props.index, ...props.selectedTiles)
-        if (props.index === Math.max(...props.selectedTiles)) props.setGamePhase('battle')
+  const addToSelectedTiles = () => {
+    const newSelectedTiles = JSON.parse(JSON.stringify(props.selectedTiles));
+    // Iterates over the 2d array and adds the hover tiles to the selected state.
+    for (let x=0; x<props.tilesOnHover.length; x++) {
+      for (let y=0; y<props.tilesOnHover[x].length; y++) {
+        if (props.tilesOnHover[x][y]) {
+          newSelectedTiles[x][y] = props.tilesOnHover[x][y]
+        }
       }
-  },[props.endPlanningPhase])
+    }
+    props.setSelectedTiles(newSelectedTiles)
+  }
+
+  const removeFromSelectedTiles = (shipName) => {
+    const newSelectedTiles = JSON.parse(JSON.stringify(props.selectedTiles));
+    for (let x=0; x<props.tilesOnHover.length; x++) {
+      for (let y=0; y<props.tilesOnHover[x].length; y++) {
+        if (newSelectedTiles[x][y] === shipName) {
+          newSelectedTiles[x][y] = null
+        }
+      }
+    }
+    props.setSelectedTiles(newSelectedTiles)
+  }
+
+  const tileStyle =  () => {
+    if (props.tilesOnHover[props.x][props.y]
+    && !props.validOnHover 
+    && props.activeShip.name !== "dummy") {
+        return "taken"
+      }
+    if (props.selectedTiles[props.x][props.y]){
+      return props.selectedTiles[props.x][props.y]
+    }
+    if (props.tilesOnHover[props.x][props.y]) {
+      return props.activeShip.name + " hover"
+    }
+  }
 
   return (
     <div 
-      id={props.index}
-      style={{backgroundColor:setBackgroundOnHover()}}
-      className={['tile', isSelected.selected?isSelected.name.toLowerCase():''].join(' ')}
-      onMouseEnter={passSelectionPreviewOnHover}
-      onWheel={updateOrientationOnWheel}
-      onClick={tileClickHandler}
-      onTouchStart={passSelectionPreviewOnHover}
+      className={`tile ${tileStyle()}`} 
+      onMouseEnter={handleHover} 
+      onWheel={handleWheel}
+      onClick={handleClick}
     >
+      {props.x}, {props.y}
     </div>
       
   )

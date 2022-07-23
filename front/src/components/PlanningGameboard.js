@@ -1,72 +1,96 @@
 import React, { useState, useEffect } from "react";
 import PlanningPhaseTile from "./PlanningPhaseTile";
+import shipTiles from "../utils/shipTiles";
 
 function PlanningGameboard(props) {
 
-  const [selectionPreview, setSelectionPreview] = useState([])
-  const [previewOrientation, setPreviewOrientation] = useState(true)
-  const [currentTile, setCurrentTile] = useState(0)
-  const [validSelection, setValidSelection] = useState([])
+  const twoDimensionalArray = () => {
+    return Array(10).fill(0).map(() => Array(10))
+  }
+
+  const [orientation, setOrientation] = useState("x")
+  const [currentTile, setCurrentTile] = useState()
+  const [tilesOnHover, setTilesOnHover] = useState(twoDimensionalArray())
+  const [selectedTiles, setSelectedTiles] = useState(twoDimensionalArray())
   const [validOnHover, setValidOnHover] = useState(true)
 
-  // When user hovers on a new tile or rotates the ship, this evaluates whether a ship is already placed there.
   useEffect(() => {
-    const result = selectionPreview.filter(element => props.selectedTiles.includes(element))
-    result.length
-      ?setValidOnHover(false)
-      :setValidOnHover(true)
-  },[selectionPreview])
+    getShipTiles()
+  },[currentTile, props.activeShip])
 
   useEffect(() => {
-    const ships = [...props.playerShips]
-    ships.map(ship => ship.tiles=[])
-    props.setPlayerShips(ships)
-  },[props.selectedTiles])
+    setValidOnHover(checkValidOnHover())
+  },[tilesOnHover])
 
-  const onTouchMoveHandler = (e) => {
+  const handleMouseLeave = () => {
+    setCurrentTile()
+  }
+
+  const getShipTiles = () => {
+    const newTilesOnHover = twoDimensionalArray()
+
+    if (currentTile) {
+      const tiles = shipTiles(currentTile[orientation], props.activeShip.length)
+      if (orientation === "x") {
+        for (const tile of tiles) {
+          newTilesOnHover[tile][currentTile.y] = props.activeShip.name
+        }
+      } else {
+        for (const tile of tiles) {
+          newTilesOnHover[currentTile.x][tile] = props.activeShip.name
+        }
+      }
+    }
+    setTilesOnHover(newTilesOnHover)
+  }
+
+  const checkValidOnHover = () => {
+    for (let x=0; x<selectedTiles.length; x++) {
+      for (let y=0; y<selectedTiles[x].length; y++) {
+        if (selectedTiles[x][y] && tilesOnHover[x][y]) return false
+      }
+    }
+    return true
+  }
+
+  const handleTouchMove = (e) => {
     const xCoord = e.targetTouches[0].clientX
     const yCoord = e.targetTouches[0].clientY
     const elements = document.elementsFromPoint(xCoord, yCoord)
     if (elements[0].classList.contains('tile')) {
-      setCurrentTile(+elements[0].id)
+      setCurrentTile({x: +elements[0].x, y: +elements[0].y})
     }
   }
 
   return (
     <main>
       <div id="gameboard"
-        onMouseLeave={() => {setSelectionPreview([])}}
-        onTouchMove={onTouchMoveHandler}
+        onMouseLeave={handleMouseLeave}
+        onTouchMove={handleTouchMove}
       >
-        {props.gamePhase === "planning"?
-
-          [...Array(100)].map((e,i) =>  {
-            return (
-              <PlanningPhaseTile 
-                key={i}
-                index={i}
-                playerShips={props.playerShips}
-                setPlayerShips={props.setPlayerShips}
-                activeShip={props.activeShip}
-                validOnHover={validOnHover}
-                changeShipSelectedStatus={props.changeShipSelectedStatus}
-                setGamePhase={props.setGamePhase}
-                endPlanningPhase={props.endPlanningPhase}
-                selectionPreview={selectionPreview}
-                setSelectionPreview={setSelectionPreview}
-                previewOrientation={previewOrientation}
-                setPreviewOrientation={setPreviewOrientation}
-                currentTile={currentTile}
-                setCurrentTile={setCurrentTile}
-                validSelection={validSelection}
-                setValidSelection={setValidSelection}
-                selectedTiles={props.selectedTiles}
-                setSelectedTiles={props.setSelectedTiles}
-              />
-            )
-          })
-          :"hi"
-        }
+      {
+      [...Array(10)].map((e, i) => (
+        [...Array(10)].map((e2, i2) => (
+          <PlanningPhaseTile 
+            key = {`${i} ${i2}`}
+            x={i2} 
+            y={i} 
+            orientation={orientation}
+            setOrientation={setOrientation}
+            tilesOnHover={tilesOnHover}
+            setTilesOnHover={setTilesOnHover}
+            currentTile={currentTile}
+            setCurrentTile={setCurrentTile}
+            ships={props.ships}
+            activeShip={props.activeShip}
+            updateShips={props.updateShips}
+            selectedTiles={selectedTiles}
+            setSelectedTiles={setSelectedTiles}
+            validOnHover={validOnHover}
+          />
+        ))
+      ))
+      }
       </div>
   </main>
   )

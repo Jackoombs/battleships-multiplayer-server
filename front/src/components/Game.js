@@ -6,39 +6,42 @@ import BattleGameboard from "./BattleGameboard";
 
 function Game(props) {
 
-  const createShip = (name, color, length) => {
-    return{name, color, length, placed:false, tiles: []}
+  const ship = (name, length, position) => {
+    return {name, length, position: [], sunk: false}
   }
+
   const [isReady, setIsReady] = useState(false)
-  const [endPlanningPhase, setEndPlanningPhase] = useState()
   const [selectedTiles, setSelectedTiles]= useState([])
-  const [playerShips, setPlayerShips] = useState([
-    createShip('Carrier', 'rgb(255, 89, 94)', 5),
-    createShip('Battleship', 'rgb(255, 202, 58)', 4),
-    createShip('Cruiser', 'rgb(138, 201, 38)', 3),
-    createShip('Submarine','rgb(226, 248, 241)', 3),
-    createShip('Destroyer', 'rgb(183, 158, 219)', 2) 
+  const [ships, setShips] = useState([
+    ship("carrier", 5),
+    ship("battleship", 4),
+    ship("destroyer", 3),
+    ship("submarine", 3),
+    ship("patrol-boat", 2),
+    ship("dummy", 1)
   ])
-  const [activeShip, setActiveShip] = useState(playerShips[0])
+  const [activeShip, setActiveShip] = useState(ships[0])
 
   useEffect(() => {
-    const shipsNotPlaced = playerShips.filter(ship => ship.placed === false)
-    if (shipsNotPlaced.length) setActiveShip(shipsNotPlaced[0])
-    else setActiveShip({name:false, selected:true})
-  },[playerShips])
+    setNewActiveShip()
+  },[ships])
 
-  const changeShipSelectedStatus = (ship, isPlaced) => {
-    const updatedShip = ship
-    updatedShip.placed = isPlaced
-    const index = playerShips.findIndex(arrayShip => arrayShip.name === ship.name)
-    const newArray = [...playerShips]
-    newArray[index] = updatedShip
-    setPlayerShips(newArray)
+  const updateShips = (isPlaced, shipName) => {
+    const newShips = ships.map(ship => {
+      if (ship.name === shipName) {
+        ship.placed = isPlaced
+      }
+      return ship
+    })
+    setShips(newShips)
   }
 
-  props.socket.on("start-battle", () => {
-    setEndPlanningPhase(true)
-  })
+  const setNewActiveShip = () => {
+    const shipsNotPlaced = ships.filter(ship => !ship.placed)
+    if (shipsNotPlaced.length){
+      setActiveShip(shipsNotPlaced[0])
+    }
+  }
 
   return (
     <main className="game">
@@ -48,21 +51,15 @@ function Game(props) {
       {
       props.gamePhase === "planning"
         ? <PlanningGameboard 
-            playerShips={playerShips}
-            setPlayerShips={setPlayerShips}
+            ships={ships}
             activeShip={activeShip}
-            changeShipSelectedStatus={changeShipSelectedStatus}
-            gamePhase={props.gamePhase}
-            setGamePhase={props.setGamePhase}
-            endPlanningPhase={endPlanningPhase}
-            selectedTiles={selectedTiles}
-            setSelectedTiles={setSelectedTiles}
+            updateShips={updateShips}
           />
         : <BattleGameboard 
             playerTurn={props.playerTurn}
             setPlayerTurn={props.setPlayerTurn}
-            playerShips={playerShips}
-            setPlayerShips={setPlayerShips}
+            ships={ships}
+            setShips={setShips}
             setGamePhase={props.setGamePhase}
             selectedTiles={selectedTiles}
             setSelectedTiles={setSelectedTiles}
@@ -77,7 +74,7 @@ function Game(props) {
         activeShip={activeShip}
         gamePhase={props.gamePhase}
         setGamePhase={props.setGamePhase}
-        playerShips={playerShips}
+        ships={ships}
         socket={props.socket}
         room={props.room}
       />
