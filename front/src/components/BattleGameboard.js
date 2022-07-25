@@ -1,23 +1,38 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Socket } from "socket.io-client";
 import BattleTile from "./BattleTile";
 
 function BattleGameboard(props) {
 
-  if (props.playerTurn)
+  const [opponentTiles, setOpponentTiles] = useState(props.twoDimensionalArray())
+  const [currentTile, setCurrentTile] = useState({})
+
+  const sendFire = () => {
+    props.socket.emit("send-fire", props.room, currentTile)
+  }
 
   return (
     <main>
       <div id="gameboard">
-        {[...Array(100)].map((e,i) => {
-          return(
-            <BattleTile 
-              key={i}
-              index={i}
-              playerTurn={props.playerTurn}
-            />
-          )
-        })}
+      {
+      [...Array(10)].map((e, i) => (
+        [...Array(10)].map((e2, i2) => (
+          <BattleTile 
+            key = {`${i} ${i2}`}
+            x={i2} 
+            y={i} 
+            playerTurn={props.playerTurn}
+            currentTile={currentTile}
+            setCurrentTile={setCurrentTile}
+            ships={props.ships}
+            activeShip={props.activeShip}
+            selectedTiles={props.selectedTiles}
+            setSelectedTiles={props.setSelectedTiles}
+            opponentTiles={opponentTiles}
+          />
+        ))
+      ))
+      }
       </div>
     </main>
   )

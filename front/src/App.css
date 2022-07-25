@@ -228,3 +228,11 @@ li {
 .miss {
   background-color: purple;
 }
+
+.bomb {
+  cursor: pointer;
+  background-image: url("./assets/torpedo.png");
+  background-size: 75%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
