@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { Puff } from 'react-loading-icons'
 
 function PlanningWait(props) {

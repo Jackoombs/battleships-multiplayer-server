@@ -4,14 +4,9 @@ import shipTiles from "../utils/shipTiles";
 
 function PlanningGameboard(props) {
 
-  const twoDimensionalArray = () => {
-    return Array(10).fill(0).map(() => Array(10))
-  }
-
   const [orientation, setOrientation] = useState("x")
   const [currentTile, setCurrentTile] = useState()
-  const [tilesOnHover, setTilesOnHover] = useState(twoDimensionalArray())
-  const [selectedTiles, setSelectedTiles] = useState(twoDimensionalArray())
+  const [tilesOnHover, setTilesOnHover] = useState(props.twoDimensionalArray())
   const [validOnHover, setValidOnHover] = useState(true)
 
   useEffect(() => {
@@ -27,7 +22,7 @@ function PlanningGameboard(props) {
   }
 
   const getShipTiles = () => {
-    const newTilesOnHover = twoDimensionalArray()
+    const newTilesOnHover = props.twoDimensionalArray()
 
     if (currentTile) {
       const tiles = shipTiles(currentTile[orientation], props.activeShip.length)
@@ -45,9 +40,9 @@ function PlanningGameboard(props) {
   }
 
   const checkValidOnHover = () => {
-    for (let x=0; x<selectedTiles.length; x++) {
-      for (let y=0; y<selectedTiles[x].length; y++) {
-        if (selectedTiles[x][y] && tilesOnHover[x][y]) return false
+    for (let x=0; x<props.selectedTiles.length; x++) {
+      for (let y=0; y<props.selectedTiles[x].length; y++) {
+        if (props.selectedTiles[x][y] && tilesOnHover[x][y]) return false
       }
     }
     return true
@@ -84,8 +79,8 @@ function PlanningGameboard(props) {
             ships={props.ships}
             activeShip={props.activeShip}
             updateShips={props.updateShips}
-            selectedTiles={selectedTiles}
-            setSelectedTiles={setSelectedTiles}
+            selectedTiles={props.selectedTiles}
+            setSelectedTiles={props.setSelectedTiles}
             validOnHover={validOnHover}
           />
         ))

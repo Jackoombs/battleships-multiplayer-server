@@ -10,8 +10,12 @@ function Game(props) {
     return {name, length, position: [], sunk: false}
   }
 
+  const twoDimensionalArray = () => {
+    return Array(10).fill(0).map(() => Array(10))
+  }
+
   const [isReady, setIsReady] = useState(false)
-  const [selectedTiles, setSelectedTiles]= useState([])
+  const [selectedTiles, setSelectedTiles]= useState(twoDimensionalArray())
   const [ships, setShips] = useState([
     ship("carrier", 5),
     ship("battleship", 4),
@@ -54,6 +58,9 @@ function Game(props) {
             ships={ships}
             activeShip={activeShip}
             updateShips={updateShips}
+            selectedTiles={selectedTiles}
+            setSelectedTiles={setSelectedTiles}
+            twoDimensionalArray={twoDimensionalArray}
           />
         : <BattleGameboard 
             playerTurn={props.playerTurn}
@@ -63,6 +70,7 @@ function Game(props) {
             setGamePhase={props.setGamePhase}
             selectedTiles={selectedTiles}
             setSelectedTiles={setSelectedTiles}
+            twoDimensionalArray={twoDimensionalArray}
             socket={props.socket}
             room={props.room}
           />
