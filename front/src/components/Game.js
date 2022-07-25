@@ -5,78 +5,77 @@ import GameStatus from "./GameStatus";
 import BattleGameboard from "./BattleGameboard";
 
 function Game(props) {
-
   const ship = (name, length, position) => {
-    return {name, length, position: [], sunk: false}
-  }
+    return { name, length, position: [], sunk: false };
+  };
 
   const twoDimensionalArray = () => {
-    return Array(10).fill(0).map(() => Array(10))
-  }
+    return Array(10)
+      .fill(0)
+      .map(() => Array(10));
+  };
 
-  const [isReady, setIsReady] = useState(false)
-  const [selectedTiles, setSelectedTiles]= useState(twoDimensionalArray())
+  const [isReady, setIsReady] = useState(false);
+  const [selectedTiles, setSelectedTiles] = useState(twoDimensionalArray());
   const [ships, setShips] = useState([
     ship("carrier", 5),
     ship("battleship", 4),
     ship("destroyer", 3),
     ship("submarine", 3),
     ship("patrol-boat", 2),
-    ship("dummy", 1)
-  ])
-  const [activeShip, setActiveShip] = useState(ships[0])
+    ship("dummy", 1),
+  ]);
+  const [activeShip, setActiveShip] = useState(ships[0]);
 
   useEffect(() => {
-    setNewActiveShip()
-  },[ships])
+    setNewActiveShip();
+  }, [ships]);
 
   const updateShips = (isPlaced, shipName) => {
-    const newShips = ships.map(ship => {
+    const newShips = ships.map((ship) => {
       if (ship.name === shipName) {
-        ship.placed = isPlaced
+        ship.placed = isPlaced;
       }
-      return ship
-    })
-    setShips(newShips)
-  }
+      return ship;
+    });
+    setShips(newShips);
+  };
 
   const setNewActiveShip = () => {
-    const shipsNotPlaced = ships.filter(ship => !ship.placed)
-    if (shipsNotPlaced.length){
-      setActiveShip(shipsNotPlaced[0])
+    const shipsNotPlaced = ships.filter((ship) => !ship.placed);
+    if (shipsNotPlaced.length) {
+      setActiveShip(shipsNotPlaced[0]);
     }
-  }
+  };
 
   return (
     <main className="game">
-      <GameInfo 
-        gamePhase={props.gamePhase}
-      />
-      {
-      props.gamePhase === "planning"
-        ? <PlanningGameboard 
-            ships={ships}
-            activeShip={activeShip}
-            updateShips={updateShips}
-            selectedTiles={selectedTiles}
-            setSelectedTiles={setSelectedTiles}
-            twoDimensionalArray={twoDimensionalArray}
-          />
-        : <BattleGameboard 
-            playerTurn={props.playerTurn}
-            setPlayerTurn={props.setPlayerTurn}
-            ships={ships}
-            setShips={setShips}
-            setGamePhase={props.setGamePhase}
-            selectedTiles={selectedTiles}
-            setSelectedTiles={setSelectedTiles}
-            twoDimensionalArray={twoDimensionalArray}
-            socket={props.socket}
-            room={props.room}
-          />
-      }
-      
-      <GameStatus 
+      <GameInfo gamePhase={props.gamePhase} />
+      {props.gamePhase === "planning" ? (
+        <PlanningGameboard
+          ships={ships}
+          activeShip={activeShip}
+          updateShips={updateShips}
+          selectedTiles={selectedTiles}
+          setSelectedTiles={setSelectedTiles}
+          twoDimensionalArray={twoDimensionalArray}
+        />
+      ) : (
+        <BattleGameboard
+          playerTurn={props.playerTurn}
+          setPlayerTurn={props.setPlayerTurn}
+          ships={ships}
+          setShips={setShips}
+          setGamePhase={props.setGamePhase}
+          selectedTiles={selectedTiles}
+          setSelectedTiles={setSelectedTiles}
+          twoDimensionalArray={twoDimensionalArray}
+          socket={props.socket}
+          room={props.room}
+        />
+      )}
+
+      <GameStatus
         isReady={isReady}
         setIsReady={setIsReady}
         activeShip={activeShip}
@@ -87,7 +86,7 @@ function Game(props) {
         room={props.room}
       />
     </main>
-  )
+  );
 }
 
-export default Game
+export default Game;

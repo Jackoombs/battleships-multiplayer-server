@@ -1,7 +1,6 @@
 import React from "react";
 
 function LobbyCreateJoin(props) {
-
   return (
     <>
       <button className="lobby-btn" onClick={() => props.setPlayerTurn(false)}>
@@ -11,7 +10,7 @@ function LobbyCreateJoin(props) {
         Create Game
       </button>
     </>
-  )
+  );
 }
 
-export default LobbyCreateJoin
+export default LobbyCreateJoin;

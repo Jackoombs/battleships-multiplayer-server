@@ -38,4 +38,6 @@ io.on("connection", (socket) => {
   socket.on("start-battle", room => {
     io.to(room).emit('battle-begin')
   })
+
+  socket.on("send-fire", (room, tile))
 });

@@ -1,44 +1,41 @@
 function BattleTile(props) {
-
   const handleHover = () => {
-    props.setCurrentTile({x: props.x, y:props.y})
-  }
+    props.setCurrentTile({ x: props.x, y: props.y });
+  };
 
   const handleClick = () => {
-    if (props.playerTurn) {
-      sendFire()
+    if (props.playerTurn && checkTileFree()) {
+      props.sendFire();
     }
-  }
+  };
 
-  const sendFire = () => {
-    
-  }
+  const checkTileFree = () => {
+    return props.opponentTiles[props.x][props.y];
+  };
 
   const tileStyle = () => {
-    if (props.playerTurn 
-    && props.opponentTiles[props.x][props.y]) {
-      return props.opponentTiles[props.x][props.y]
+    if (props.playerTurn && props.opponentTiles[props.x][props.y]) {
+      return props.opponentTiles[props.x][props.y];
     }
-    if (!props.playerTurn 
-    && props.selectedTiles[props.x][props.y]) {
-      return props.selectedTiles[props.x][props.y]
-      }
-    if (props.currentTile.x === props.x 
-    && props.currentTile.y ===props.y
-    && props.playerTurn) {
-      return "bomb"
+    if (!props.playerTurn && props.selectedTiles[props.x][props.y]) {
+      return props.selectedTiles[props.x][props.y];
     }
-  }
+    if (
+      props.currentTile.x === props.x &&
+      props.currentTile.y === props.y &&
+      props.playerTurn
+    ) {
+      return "bomb";
+    }
+  };
 
   return (
-    <div 
+    <div
       className={`tile ${tileStyle()}`}
       onMouseEnter={handleHover}
       onClick={handleClick}
-    >
-
-    </div>
-  )
+    ></div>
+  );
 }
 
-export default BattleTile
+export default BattleTile;
