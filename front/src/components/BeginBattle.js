@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PlanningWait from "./PlanningWait";
 
 function BeginBattle(props) {
+  
   useEffect(() => {
     props.socket.on("check-ready", emitBattle);
   });

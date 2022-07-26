@@ -31,13 +31,23 @@ io.on("connection", (socket) => {
   })
 
   socket.on("client-ready", room => {
-    console.log(socket.id)
-    socket.broadcast.to(room).emit("check-ready", socket.id)
+    socket.broadcast.to(room).emit("check-ready")
   })
 
   socket.on("start-battle", room => {
     io.to(room).emit('battle-begin')
   })
 
-  socket.on("send-fire", (room, tile))
+  socket.on("send-fire", (room, tile) => {
+    socket.broadcast.to(room).emit("receive-fire", tile)
+  })
+
+  socket.on("send-turn-result", (room, tile, isHit, isSunk) => {
+    console.log(room, tile, isHit)
+    io.to(room).emit("receive-turn-result", tile, isHit, isSunk)
+  })
+
+  socket.on("send-winner", room => {
+    io.to(room).emit("receive-winner")
+  })
 });

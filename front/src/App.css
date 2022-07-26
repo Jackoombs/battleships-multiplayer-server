@@ -222,11 +222,14 @@ li {
 }
 
 .hit {
-  background-color: red;
+  background: url("./assets/hit.png");
+  background-size: 75%;
+  background-repeat: no-repeat;
+  background-position: top 0.4rem left 0.47rem
 }
 
 .miss {
-  background-color: purple;
+  background-color: transparent;
 }
 
 .bomb {

@@ -1,16 +1,19 @@
 function BattleTile(props) {
+
   const handleHover = () => {
-    props.setCurrentTile({ x: props.x, y: props.y });
+    if (!props.disableClick){
+      props.setCurrentTile({ x: props.x, y: props.y });
+    }
   };
 
   const handleClick = () => {
-    if (props.playerTurn && checkTileFree()) {
+    if (props.playerTurn && checkTileFree() && !props.disableClick) {
       props.sendFire();
     }
   };
 
   const checkTileFree = () => {
-    return props.opponentTiles[props.x][props.y];
+    return !props.opponentTiles[props.x][props.y] 
   };
 
   const tileStyle = () => {

@@ -23,6 +23,10 @@ function App() {
     setGamePhase("battle");
   });
 
+  socket.on("receive-winner", () => {
+    setGamePhase("result")
+  })
+
   const renderGamePhase = () => {
     if (gamePhase === "lobby") {
       return (

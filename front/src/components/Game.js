@@ -6,7 +6,7 @@ import BattleGameboard from "./BattleGameboard";
 
 function Game(props) {
   const ship = (name, length, position) => {
-    return { name, length, position: [], sunk: false };
+    return { name, length, sunk: false };
   };
 
   const twoDimensionalArray = () => {
@@ -18,6 +18,14 @@ function Game(props) {
   const [isReady, setIsReady] = useState(false);
   const [selectedTiles, setSelectedTiles] = useState(twoDimensionalArray());
   const [ships, setShips] = useState([
+    ship("carrier", 5),
+    ship("battleship", 4),
+    ship("destroyer", 3),
+    ship("submarine", 3),
+    ship("patrol-boat", 2),
+    ship("dummy", 1),
+  ]);
+  const [opponentShips, setOpponentShips] = useState([
     ship("carrier", 5),
     ship("battleship", 4),
     ship("destroyer", 3),
@@ -48,6 +56,11 @@ function Game(props) {
     }
   };
 
+  useEffect(() => {
+    console.log(selectedTiles)
+  },[selectedTiles])
+  
+
   return (
     <main className="game">
       <GameInfo gamePhase={props.gamePhase} />
@@ -66,6 +79,8 @@ function Game(props) {
           setPlayerTurn={props.setPlayerTurn}
           ships={ships}
           setShips={setShips}
+          opponentShips={opponentShips}
+          setOpponentShips={setOpponentShips}
           setGamePhase={props.setGamePhase}
           selectedTiles={selectedTiles}
           setSelectedTiles={setSelectedTiles}
