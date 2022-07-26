@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Lobby from "./components/Lobby";
 import Game from "./components/Game";
+import Result from "./components/Result";
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:8080/");
@@ -27,20 +28,19 @@ function App() {
     setGamePhase("result")
   })
 
-  const renderGamePhase = () => {
-    if (gamePhase === "lobby") {
-      return (
+  return (
+    <div className="App">
+      <h1>Battleships</h1>
+
+      {gamePhase === "lobby" &&
         <Lobby
           socket={socket}
           playerTurn={playerTurn}
           setPlayerTurn={setPlayerTurn}
           room={room}
           setRoom={setRoom}
-        />
-      );
-    }
-    if (gamePhase === "planning" || gamePhase === "battle") {
-      return (
+        />}
+      {(gamePhase === "planning" || gamePhase === "battle") && 
         <Game
           gamePhase={gamePhase}
           setGamePhase={setGamePhase}
@@ -48,16 +48,11 @@ function App() {
           room={room}
           playerTurn={playerTurn}
           setPlayerTurn={setPlayerTurn}
-        />
-      );
-    }
-    if (gamePhase === "result") return <h1>Winner</h1>;
-  };
-
-  return (
-    <div className="App">
-      <h1>Battleships</h1>
-      {renderGamePhase()}
+        />}
+      {gamePhase === "result" &&
+        <Result 
+          playerTurn={playerTurn}
+        />}
     </div>
   );
 }
