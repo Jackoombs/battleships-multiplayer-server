@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Lobby from "./components/Lobby";
 import Game from "./components/Game";
@@ -9,24 +9,37 @@ const socket = io("http://localhost:8080/");
 
 function App() {
   const [playerTurn, setPlayerTurn] = useState();
+  const [isWinner, setIsWinner] = useState(false)
   const [room, setRoom] = useState();
   const [gamePhase, setGamePhase] = useState("lobby");
 
-  socket.on("valid-room", (room) => {
-    setRoom(room);
-  });
+  const finalPlayerTurn = useRef(playerTurn)
 
-  socket.on("start-game", () => {
-    setGamePhase("planning");
-  });
+  useEffect(() => {
+    finalPlayerTurn.current = playerTurn
+  },[playerTurn])
 
-  socket.on("battle-begin", () => {
-    setGamePhase("battle");
-  });
+  useEffect(() => {
+    socket.on("valid-room", (room) => {
+      setRoom(room);
+    });
+  
+    socket.on("start-game", () => {
+      setGamePhase("planning");
+    });
+  
+    socket.on("battle-begin", () => {
+      setGamePhase("battle");
+    });
+  
+    socket.on("receive-winner", () => {
+      setGamePhase("result")
+      console.log(finalPlayerTurn)
+      if (finalPlayerTurn.current) setIsWinner(true)
+    })
+  },[])
 
-  socket.on("receive-winner", () => {
-    setGamePhase("result")
-  })
+
 
   return (
     <div className="App">
@@ -51,7 +64,7 @@ function App() {
         />}
       {gamePhase === "result" &&
         <Result 
-          playerTurn={playerTurn}
+          isWinner={isWinner}
         />}
     </div>
   );
