@@ -65,8 +65,8 @@ h1 {
 }
 
 h2 {
-  text-align: center;
-  font-size: 2.5rem;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 main {
@@ -238,4 +238,15 @@ li {
   background-size: 75%;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.ship-status {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.ships {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }

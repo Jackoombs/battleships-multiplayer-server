@@ -3,6 +3,7 @@ import PlanningGameboard from "./PlanningGameboard";
 import GameInfo from "./GameInfo";
 import GameStatus from "./GameStatus";
 import BattleGameboard from "./BattleGameboard";
+import ShipStatus from "./ShipStatus";
 
 function Game(props) {
   const ship = (name, length, position) => {
@@ -74,20 +75,26 @@ function Game(props) {
           twoDimensionalArray={twoDimensionalArray}
         />
       ) : (
-        <BattleGameboard
-          playerTurn={props.playerTurn}
-          setPlayerTurn={props.setPlayerTurn}
-          ships={ships}
-          setShips={setShips}
-          opponentShips={opponentShips}
-          setOpponentShips={setOpponentShips}
-          setGamePhase={props.setGamePhase}
-          selectedTiles={selectedTiles}
-          setSelectedTiles={setSelectedTiles}
-          twoDimensionalArray={twoDimensionalArray}
-          socket={props.socket}
-          room={props.room}
-        />
+        <>
+          <BattleGameboard
+            playerTurn={props.playerTurn}
+            setPlayerTurn={props.setPlayerTurn}
+            ships={ships}
+            setShips={setShips}
+            opponentShips={opponentShips}
+            setOpponentShips={setOpponentShips}
+            setGamePhase={props.setGamePhase}
+            selectedTiles={selectedTiles}
+            setSelectedTiles={setSelectedTiles}
+            twoDimensionalArray={twoDimensionalArray}
+            socket={props.socket}
+            room={props.room}
+          />
+          <ShipStatus 
+            ships={ships}
+            opponentShips={opponentShips}
+          />
+        </>
       )}
 
       <GameStatus

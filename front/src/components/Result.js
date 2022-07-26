@@ -56,15 +56,17 @@ function Result(props) {
   }, [intervalId]);
 
   const ResultMessage = () => {
-    props.playerTurn
-      ? "Congrats you're the WINNER!"
-      : "Commiserations, you lost."
+    return (
+      props.isWinner
+        ? "Congrats you're the WINNER!"
+        : "Commiserations, you lost."
+    )
   }
 
   return (
     <main>
-      <h3>{ResultMessage()}</h3>
-      {props.playerTurn && <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />} 
+      <h2>{ResultMessage()}</h2>
+      {props.isWinner && <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />} 
       <button>PlayAgain?</button>
     </main>
   )
