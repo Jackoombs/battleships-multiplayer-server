@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PlanningPhaseTile from "./PlanningPhaseTile";
 import shipTiles from "../utils/shipTiles";
+import RotateButton from "./RotateButton";
 
 function PlanningGameboard(props) {
   const [orientation, setOrientation] = useState("x");
@@ -10,7 +11,7 @@ function PlanningGameboard(props) {
 
   useEffect(() => {
     getShipTiles();
-  }, [currentTile, props.activeShip]);
+  }, [currentTile, props.activeShip, orientation]);
 
   useEffect(() => {
     setValidOnHover(checkValidOnHover());
@@ -87,6 +88,12 @@ function PlanningGameboard(props) {
             />
           ))
         )}
+      </div>
+      <div>
+        <RotateButton 
+          orientation={orientation}
+          setOrientation={setOrientation}
+        />
       </div>
     </main>
   );

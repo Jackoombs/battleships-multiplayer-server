@@ -5,7 +5,6 @@ function PlanningPhaseTile(props) {
 
   const handleWheel = (e) => {
     props.setOrientation((old) => (old === "x" ? "y" : "x"));
-    props.setCurrentTile({ x: props.x, y: props.y });
   };
 
   const handleClick = (e) => {
@@ -69,6 +68,7 @@ function PlanningPhaseTile(props) {
       onMouseEnter={handleHover}
       onWheel={handleWheel}
       onClick={handleClick}
+      onTouchStart={handleHover}
     >
       {props.x}, {props.y}
     </div>
