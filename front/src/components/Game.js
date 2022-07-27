@@ -71,16 +71,14 @@ function Game(props) {
         roundStatus={roundStatus}
       />
       {props.gamePhase === "planning" ? (
-        <>
-          <PlanningGameboard
-            ships={ships}
-            activeShip={activeShip}
-            updateShips={updateShips}
-            selectedTiles={selectedTiles}
-            setSelectedTiles={setSelectedTiles}
-            twoDimensionalArray={twoDimensionalArray}
-          />
-        </>
+        <PlanningGameboard
+          ships={ships}
+          activeShip={activeShip}
+          updateShips={updateShips}
+          selectedTiles={selectedTiles}
+          setSelectedTiles={setSelectedTiles}
+          twoDimensionalArray={twoDimensionalArray}
+        />
       ) : (
         <>
           <BattleGameboard

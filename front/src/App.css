@@ -171,6 +171,7 @@ li {
   padding: 2rem;
   border-radius: 15px;
   margin-inline: 2vw;
+  text-align: center;
 
   display: flex;
   flex-direction: column;
@@ -260,6 +261,10 @@ li {
   text-align: center;
 }
 
+.rotate-btn {
+  padding: 1rem 4rem
+}
+
 @media only screen and (max-width: 1500px) {
   :root {
     font-size: 14px;
@@ -293,9 +298,6 @@ li {
 }
 
 @media only screen and (max-width: 500px) {
-  .App {
-    gap: 0;
-  }
 
   .tile {
     height: 9.5vw;
@@ -308,5 +310,15 @@ li {
 
   h1 {
     font-size: 4rem;
+  }
+
+  .lobby-btn {
+    max-width: 50vw;
+    font-size: 2rem;
+    padding: 2rem 0rem ;
+  }
+
+  #roomInput {
+    margin: 1rem;
   }
 }
