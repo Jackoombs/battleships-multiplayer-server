@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 
 const io = new Server(8080, {
   cors: {
-    origin: ["https://jackoombs.github.io/battleships-multiplayer/index"]
+    origin: ["https://jackoombs.github.io/battleships-multiplayer"]
   }
 })
 
