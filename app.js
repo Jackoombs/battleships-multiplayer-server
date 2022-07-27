@@ -2,7 +2,9 @@ import { Server } from "socket.io";
 
 const io = new Server(8080, {
   cors: {
-    origin: "*"
+    origin: "*",
+    methods: ["GET", "POST"],
+    credentials: true
   }
 })
 
