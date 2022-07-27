@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 
-const io = new Server(8080, {
+const io = new Server(process.env.PORT, {
   cors: {
     origin: ["https://jackoombs.github.io"],
     methods: ["GET", "POST"],
