@@ -304,6 +304,10 @@ li {
     width: 9.5vw;
   }
 
+  .lobby {
+    margin: 1rem;
+  }
+
   h2 {
     font-size: 1.5rem;
   }
@@ -313,12 +317,8 @@ li {
   }
 
   .lobby-btn {
-    max-width: 50vw;
+    max-width:45vw;
     font-size: 2rem;
     padding: 2rem 0rem ;
-  }
-
-  #roomInput {
-    margin: 1rem;
   }
 }
