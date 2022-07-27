@@ -40,7 +40,7 @@ input {
 }
 
 p {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 body {
@@ -72,7 +72,7 @@ h2 {
 main {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1rem;
   justify-content: center;
   align-items: center;
 }
@@ -124,7 +124,7 @@ form p {
 
 aside {
   height: 100%;
-  padding-inline: 2rem;
+  padding-inline: 1rem;
 
   display: flex;
   flex-direction: column;
@@ -245,8 +245,68 @@ li {
   grid-template-rows: 1fr 1fr;
 }
 
+.ship-panel {
+  width: fit-content;
+  padding-inline: 2rem;
+}
+
 .ships {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+}
+
+.info {
+  text-align: center;
+}
+
+@media only screen and (max-width: 1500px) {
+  :root {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  :root {
+    font-size: 12px;
+  }
+
+  .game {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: 100%;
+    gap: 3rem;
+  }
+
+  .ship-status {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    justify-content: center
+  }
+
+  .ship-panel {
+    width: 40vw;
+    max-width: 200px;
+    padding-inline: 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .App {
+    gap: 0;
+  }
+
+  .tile {
+    height: 9.5vw;
+    width: 9.5vw;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h1 {
+    font-size: 4rem;
+  }
 }

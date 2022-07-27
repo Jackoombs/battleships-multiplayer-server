@@ -11,6 +11,7 @@ function BattleGameboard(props) {
       setTimeout(() => {
         props.setPlayerTurn(turn => !turn)
         setDisableClick(false)
+        props.setRoundStatus("deciding")
       },500)
     }
   },[disableClick])
@@ -32,6 +33,11 @@ function BattleGameboard(props) {
     props.socket.on("receive-turn-result", (tile, isHit, isSunk) => {
       updateHitMiss(tile, isHit)
       updateSunk(isSunk)
+      if (isSunk) {
+        props.setRoundStatus(isSunk)
+      } else {
+        props.setRoundStatus(isHit)
+      }
       setDisableClick(true)
     })
   },[])

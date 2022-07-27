@@ -16,6 +16,7 @@ function Game(props) {
       .map(() => Array(10));
   };
 
+  const [roundStatus, setRoundStatus] = useState("deciding")
   const [isReady, setIsReady] = useState(false);
   const [selectedTiles, setSelectedTiles] = useState(twoDimensionalArray());
   const [ships, setShips] = useState([
@@ -63,17 +64,23 @@ function Game(props) {
   
 
   return (
-    <main className="game">
-      <GameInfo gamePhase={props.gamePhase} />
+    <section className="game">
+      <GameInfo 
+        gamePhase={props.gamePhase} 
+        playerTurn={props.playerTurn}
+        roundStatus={roundStatus}
+      />
       {props.gamePhase === "planning" ? (
-        <PlanningGameboard
-          ships={ships}
-          activeShip={activeShip}
-          updateShips={updateShips}
-          selectedTiles={selectedTiles}
-          setSelectedTiles={setSelectedTiles}
-          twoDimensionalArray={twoDimensionalArray}
-        />
+        <>
+          <PlanningGameboard
+            ships={ships}
+            activeShip={activeShip}
+            updateShips={updateShips}
+            selectedTiles={selectedTiles}
+            setSelectedTiles={setSelectedTiles}
+            twoDimensionalArray={twoDimensionalArray}
+          />
+        </>
       ) : (
         <>
           <BattleGameboard
@@ -89,6 +96,7 @@ function Game(props) {
             twoDimensionalArray={twoDimensionalArray}
             socket={props.socket}
             room={props.room}
+            setRoundStatus={setRoundStatus}
           />
           <ShipStatus 
             ships={ships}
@@ -107,7 +115,7 @@ function Game(props) {
         socket={props.socket}
         room={props.room}
       />
-    </main>
+    </section>
   );
 }
 

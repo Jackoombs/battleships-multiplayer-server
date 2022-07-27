@@ -1,16 +1,18 @@
 import React from "react";
 import PlanningPhaseInfo from "./PlanningPhaseInfo";
+import BattleUpdate from "./BattleUpdate";
 
 function GameInfo(props) {
-  const renderPhaseInfo = () => {
-    if (props.gamePhase === "planning") {
-      return <PlanningPhaseInfo />;
-    }
-  };
 
   return (
-    <aside>
-      {props.gamePhase === "planning" ? <PlanningPhaseInfo /> : "hi"}
+    <aside className="info">
+      {props.gamePhase === "planning" && <PlanningPhaseInfo />}
+      {props.gamePhase === "battle" && 
+        <BattleUpdate 
+          playerTurn={props.playerTurn}
+          roundStatus={props.roundStatus}
+        /> 
+      }
     </aside>
   );
 }

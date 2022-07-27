@@ -2,7 +2,7 @@ import Ship from "./Ship"
 
 function ShipPanel(props) {
   return (
-    <div>
+    <div className="ship-panel">
       <h2>{props.text}</h2>
       <div className="ships">
         {props.ships.map((ship, i) => (

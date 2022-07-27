@@ -39,8 +39,6 @@ function App() {
     })
   },[])
 
-
-
   return (
     <div className="App">
       <h1>Battleships</h1>
