@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 
-const io = new Server(process.env.PORT, {
+const io = new Server(process.env.PORT || 8080 , {
   cors: {
     origin: ["https://jackoombs.github.io"],
     methods: ["GET", "POST"],
@@ -45,11 +45,19 @@ io.on("connection", (socket) => {
   })
 
   socket.on("send-turn-result", (room, tile, isHit, isSunk) => {
-    console.log(room, tile, isHit)
     io.to(room).emit("receive-turn-result", tile, isHit, isSunk)
   })
 
   socket.on("send-winner", room => {
     io.to(room).emit("receive-winner")
+  })
+
+  socket.on("send-play-again", room => {
+    console.log("working")
+    socket.broadcast.to(room).emit("check-play-again")
+  })
+
+  socket.on("send-restart-game", room => {
+    io.to(room).emit("restart-game")
   })
 });
